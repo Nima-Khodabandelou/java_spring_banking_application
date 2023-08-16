@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -39,8 +40,8 @@ public class User {
 
     private String accountNumber;
 
-    private String accountBalance;
-
+    private BigDecimal accountBalance;
+    // status: active, restricted, pending
     private String status;
 
     @CreationTimestamp

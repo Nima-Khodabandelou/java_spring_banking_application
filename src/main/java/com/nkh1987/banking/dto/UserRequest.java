@@ -24,6 +24,4 @@ public class UserRequest {
     private String cellPhoneNumber;
 
     private String landlineNumber;
-
-    private String status;
 }
