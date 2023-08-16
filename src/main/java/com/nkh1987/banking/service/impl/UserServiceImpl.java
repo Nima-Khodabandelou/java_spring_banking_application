@@ -1,5 +1,6 @@
 package com.nkh1987.banking.service.impl;
 
+import com.nkh1987.banking.dto.AccountInfo;
 import com.nkh1987.banking.dto.BankResponse;
 import com.nkh1987.banking.dto.UserRequest;
 import com.nkh1987.banking.entity.User;
@@ -25,12 +26,12 @@ public class UserServiceImpl implements UserService {
          * Check if the user already has an account
          */
         if (userRepository.accountExistsByEmail(userRequest.getEmail())) {
-            BankResponse response = BankResponse.builder()
+            return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
                     .responseMessage(AccountUtils.ACCOUNT_EXISTS_MESSAGE)
+                    .accountInfo(null)
                     .build();
 
-            return response;
         }
 
         User newUser = User.builder()
@@ -44,6 +45,18 @@ public class UserServiceImpl implements UserService {
                 .accountNumber(AccountUtils.generateAccountNumber())
                 .accountBalance(BigDecimal.ZERO)
                 .status("ACTIVE")
+                .build();
+
+        User savedUser = userRepository.save(newUser);
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_CREATION_SUCCESS)
+                .responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountOwnerName(savedUser.getFirstname() + " " + savedUser.getLastName() + " ")
+                        .accountNumber(savedUser.getAccountNumber())
+                        .accountBalance(savedUser.getAccountBalance())
+                        .build())
                 .build();
     }
 }

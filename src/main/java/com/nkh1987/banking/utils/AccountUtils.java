@@ -8,6 +8,10 @@ public class AccountUtils {
     public static final String
             ACCOUNT_EXISTS_MESSAGE = "A user already has an Account associated with this email address";
 
+    public static final String ACCOUNT_CREATION_SUCCESS = "002";
+
+    public static final String
+            ACCOUNT_CREATION_MESSAGE = "Account successfully created";
     public static String generateAccountNumber() {
 
         Year currentYear = Year.now();
