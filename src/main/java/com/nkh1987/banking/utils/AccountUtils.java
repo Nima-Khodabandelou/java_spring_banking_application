@@ -4,6 +4,10 @@ import java.time.Year;
 
 public class AccountUtils {
 
+    public static final String ACCOUNT_EXISTS_CODE = "001";
+    public static final String
+            ACCOUNT_EXISTS_MESSAGE = "A user already has an Account associated with this email address";
+
     public static String generateAccountNumber() {
 
         Year currentYear = Year.now();
