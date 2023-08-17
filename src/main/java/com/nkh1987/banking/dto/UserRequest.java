@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRequest {
 
-    private String firstname;
+    private String firstName;
 
     private String lastName;
 

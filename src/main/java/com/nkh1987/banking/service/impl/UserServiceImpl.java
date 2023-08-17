@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
          * Save it to DB
          * Check if the user already has an account
          */
+
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = User.builder()
-                .firstname(userRequest.getFirstname())
+                .firstname(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
                 .gender(userRequest.getGender())
                 .address(userRequest.getAddress())
@@ -58,5 +60,10 @@ public class UserServiceImpl implements UserService {
                         .accountBalance(savedUser.getAccountBalance())
                         .build())
                 .build();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

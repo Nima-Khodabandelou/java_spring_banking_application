@@ -5,13 +5,14 @@ import java.time.Year;
 public class AccountUtils {
 
     public static final String ACCOUNT_EXISTS_CODE = "001";
-    public static final String
-            ACCOUNT_EXISTS_MESSAGE = "A user already has an Account associated with this email address";
+
+    public static final String ACCOUNT_EXISTS_MESSAGE = "There is an Account associated with this email address";
 
     public static final String ACCOUNT_CREATION_SUCCESS = "002";
 
-    public static final String
-            ACCOUNT_CREATION_MESSAGE = "Account successfully created";
+    public static final String ACCOUNT_CREATION_MESSAGE = "Account successfully created";
+
+    // For the sake of simplicity, account numbers are generated randomly
     public static String generateAccountNumber() {
 
         Year currentYear = Year.now();
@@ -26,8 +27,6 @@ public class AccountUtils {
 
         String randomNumber = String.valueOf(randNumber);
 
-        StringBuilder accountNumber = new StringBuilder();
-
-        return accountNumber.append(year).append(randomNumber).toString();
+        return year + randomNumber;
     }
 }
