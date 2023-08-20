@@ -1,13 +1,9 @@
 package com.nkh1987.banking.service.impl;
 
-import com.nkh1987.banking.dto.AccountInfo;
-import com.nkh1987.banking.dto.BankResponse;
-import com.nkh1987.banking.dto.EnquiryRequest;
-import com.nkh1987.banking.dto.UserRequest;
+import com.nkh1987.banking.dto.*;
 import com.nkh1987.banking.entity.User;
 import com.nkh1987.banking.repository.UserRepository;
 import com.nkh1987.banking.utils.AccountUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -67,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankResponse balanceEnquiry(EnquiryRequest request) {
+    public BankResponse balanceInquiry(InquiryRequest request) {
 
         Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
 
@@ -93,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String nameEnquiry(EnquiryRequest request) {
+    public String nameInquiry(InquiryRequest request) {
         Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
 
         if (!isAccountExists) {
@@ -103,6 +99,33 @@ public class UserServiceImpl implements UserService {
         User userFound = userRepository.findByAccountNumber(request.getAccountNumber());
 
         return userFound.getFirstname() + " " + userFound.getLastName();
+    }
+
+    @Override
+    public BankResponse creditAccount(CreditDebitRequest request) {
+        Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
+
+        if (!isAccountExists) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_DOES_NOT_EXIST_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_DOES_NOT_EXIST_MESSAGE)
+                    .responseCode(null)
+                    .build();
+        }
+
+        User userToCredit = userRepository.findByAccountNumber(request.getAccountNumber());
+        userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountOwnerName(userToCredit.getFirstname() + " " + userToCredit.getLastName())
+                        .accountBalance(userToCredit.getAccountBalance())
+                        .accountNumber(userToCredit.getAccountNumber())
+                        .build())
+                .build();
+
     }
 
     @Override

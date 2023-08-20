@@ -1,7 +1,8 @@
 package com.nkh1987.banking.service.impl;
 
 import com.nkh1987.banking.dto.BankResponse;
-import com.nkh1987.banking.dto.EnquiryRequest;
+import com.nkh1987.banking.dto.CreditDebitRequest;
+import com.nkh1987.banking.dto.InquiryRequest;
 import com.nkh1987.banking.dto.UserRequest;
 import com.nkh1987.banking.entity.User;
 
@@ -12,9 +13,11 @@ public interface  UserService {
 
     BankResponse createAccount(UserRequest userRequest);
 
-    BankResponse balanceEnquiry(EnquiryRequest enquiryRequest);
+    BankResponse balanceInquiry(InquiryRequest enquiryRequest);
 
-    String nameEnquiry(EnquiryRequest request);
+    String nameInquiry(InquiryRequest request);
+
+    BankResponse creditAccount(CreditDebitRequest request);
 
     List<User> getAllUsers();
 }
