@@ -1,6 +1,7 @@
 package com.nkh1987.banking.controller;
 
 import com.nkh1987.banking.dto.BankResponse;
+import com.nkh1987.banking.dto.EnquiryRequest;
 import com.nkh1987.banking.dto.UserRequest;
 import com.nkh1987.banking.entity.User;
 import com.nkh1987.banking.service.impl.UserService;
@@ -23,6 +24,11 @@ public class UserController {
     public BankResponse createAccount(@RequestBody UserRequest userRequest) {
         return userService.createAccount(userRequest);
     }
+
+     @GetMapping("balanceEnquiry")
+     public BankResponse balanceEnquiry(@RequestBody EnquiryRequest request) {
+        return userService.balanceEnquiry(request);
+     }
 
     @GetMapping("getAllUsers")
     public List<User> getAllUsers() {
