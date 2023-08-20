@@ -2,7 +2,7 @@ package com.nkh1987.banking.utils;
 
 import java.time.Year;
 
-public class AccountUtils {
+public class  AccountUtils {
 
     public static final String ACCOUNT_EXISTS_CODE = "001";
 
@@ -11,6 +11,14 @@ public class AccountUtils {
     public static final String ACCOUNT_CREATION_SUCCESS = "002";
 
     public static final String ACCOUNT_CREATION_MESSAGE = "Account successfully created";
+
+    public static final String ACCOUNT_DOES_NOT_EXIST_CODE = "003";
+
+    public static final String ACCOUNT_DOES_NOT_EXIST_MESSAGE = "There is no account associated with this user";
+
+    public static final String ACCOUNT_FOUND_CODE = "004";
+
+    public static final String ACCOUNT_FOUND_MESSAGE = "User associated with this account number is found";
 
     // For the sake of simplicity, account numbers are generated randomly
     public static String generateAccountNumber() {
