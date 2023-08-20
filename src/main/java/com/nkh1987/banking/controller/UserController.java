@@ -30,6 +30,11 @@ public class UserController {
         return userService.balanceEnquiry(request);
      }
 
+     @GetMapping("nameEnquiry")
+     public String nameEnquiry(@RequestBody EnquiryRequest request) {
+        return userService.nameEnquiry(request);
+     }
+
     @GetMapping("getAllUsers")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
