@@ -142,18 +142,30 @@ public class UserServiceImpl implements UserService {
         }
 
         User userToWithdraw = userRepository.findByAccountNumber(request.getAccountNumber());
-        userToWithdraw.setAccountBalance(userToWithdraw.getAccountBalance().subtract(request.getAmount()));
-        userRepository.save(userToWithdraw);
+        int availableBalance = Integer.parseInt(userToWithdraw.getAccountBalance().toString());
+        int depositAmount = Integer.parseInt(request.getAmount().toString());
 
-        return BankResponse.builder()
-                .responseCode(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_CODE)
-                .responseMessage(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_MESSAGE)
-                .accountInfo(AccountInfo.builder()
-                        .accountOwnerName(userToWithdraw.getFirstname() + " " + userToWithdraw.getLastName())
-                        .accountBalance(userToWithdraw.getAccountBalance())
-                        .accountNumber(userToWithdraw.getAccountNumber())
-                        .build())
-                .build();
+        if (availableBalance < depositAmount) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
+                    .responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        } else {
+
+            userToWithdraw.setAccountBalance(userToWithdraw.getAccountBalance().subtract(request.getAmount()));
+            userRepository.save(userToWithdraw);
+
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_MESSAGE)
+                    .accountInfo(AccountInfo.builder()
+                            .accountOwnerName(userToWithdraw.getFirstname() + " " + userToWithdraw.getLastName())
+                            .accountBalance(userToWithdraw.getAccountBalance())
+                            .accountNumber(request.getAccountNumber())
+                            .build())
+                    .build();
+        }
     }
 
     @Override
