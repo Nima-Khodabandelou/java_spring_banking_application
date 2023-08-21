@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankResponse creditAccount(CreditDebitRequest request) {
+    public BankResponse depositMoney(CreditDebitRequest request) {
         Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
 
         if (!isAccountExists) {
@@ -113,20 +113,47 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
-        User userToCredit = userRepository.findByAccountNumber(request.getAccountNumber());
-        userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
-        userRepository.save(userToCredit);
+        User userToDeposit = userRepository.findByAccountNumber(request.getAccountNumber());
+        userToDeposit.setAccountBalance(userToDeposit.getAccountBalance().add(request.getAmount()));
+        userRepository.save(userToDeposit);
 
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_CODE)
                 .responseMessage(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_MESSAGE)
                 .accountInfo(AccountInfo.builder()
-                        .accountOwnerName(userToCredit.getFirstname() + " " + userToCredit.getLastName())
-                        .accountBalance(userToCredit.getAccountBalance())
-                        .accountNumber(userToCredit.getAccountNumber())
+                        .accountOwnerName(userToDeposit.getFirstname() + " " + userToDeposit.getLastName())
+                        .accountBalance(userToDeposit.getAccountBalance())
+                        .accountNumber(userToDeposit.getAccountNumber())
                         .build())
                 .build();
 
+    }
+
+    @Override
+    public BankResponse withdrawMoney(CreditDebitRequest request) {
+        Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
+
+        if(!isAccountExists) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_DOES_NOT_EXIST_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_DOES_NOT_EXIST_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+        User userToWithdraw = userRepository.findByAccountNumber(request.getAccountNumber());
+        userToWithdraw.setAccountBalance(userToWithdraw.getAccountBalance().subtract(request.getAmount()));
+        userRepository.save(userToWithdraw);
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountOwnerName(userToWithdraw.getFirstname() + " " + userToWithdraw.getLastName())
+                        .accountBalance(userToWithdraw.getAccountBalance())
+                        .accountNumber(userToWithdraw.getAccountNumber())
+                        .build())
+                .build();
     }
 
     @Override

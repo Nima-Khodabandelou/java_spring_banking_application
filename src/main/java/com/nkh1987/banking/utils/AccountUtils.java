@@ -13,6 +13,8 @@ public class  AccountUtils {
     public static final String ACCOUNT_FOUND_MESSAGE = "User associated with this account number is found";
     public static final String ACCOUNT_DEPOSIT_SUCCESS_CODE = "005";
     public static final String ACCOUNT_DEPOSIT_SUCCESS_MESSAGE = "User deposited money successfully";
+    public static final String ACCOUNT_WITHDRAW_SUCCESS_CODE = "006";
+    public static final String ACCOUNT_WITHDRAW_SUCCESS_MESSAGE = "User withdrew money successfully";
 
     // For the sake of simplicity, account numbers are generated randomly
     public static String generateAccountNumber() {

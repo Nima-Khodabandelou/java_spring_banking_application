@@ -35,9 +35,14 @@ public class UserController {
         return userService.nameInquiry(request);
      }
 
-     @PostMapping("depositMoney")
+     @PostMapping("deposit")
      public BankResponse depositMoney(@RequestBody CreditDebitRequest request) {
-        return userService.creditAccount(request);
+        return userService.depositMoney(request);
+     }
+
+     @PostMapping("withdraw")
+     public BankResponse withdrawMoney(@RequestBody CreditDebitRequest request) {
+        return userService.withdrawMoney(request);
      }
 
     @GetMapping("getAllUsers")
