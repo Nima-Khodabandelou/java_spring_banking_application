@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
         BigInteger availableBalance = userToWithdraw.getAccountBalance().toBigInteger();
         BigInteger depositAmount = request.getAmount().toBigInteger();
 
-        if (availableBalance < depositAmount) {
+        if (availableBalance.intValue() < depositAmount.intValue()) {
             return BankResponse.builder()
                     .responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
                     .responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE)
@@ -203,6 +203,10 @@ public class UserServiceImpl implements UserService {
         } else {
             sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
             userRepository.save(sourceAccountUser);
+            destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance()
+                    .add(request.getAmount()));
+            userRepository.save(destinationAccountUser);
+
             return BankResponse.builder()
                     .responseCode(AccountUtils.TRANSFER_SUCCESS_CODE)
                     .responseMessage(AccountUtils.TRANSFER_SUCCESS_MESSAGE)
