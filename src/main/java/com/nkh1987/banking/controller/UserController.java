@@ -1,9 +1,6 @@
 package com.nkh1987.banking.controller;
 
-import com.nkh1987.banking.dto.BankResponse;
-import com.nkh1987.banking.dto.CreditDebitRequest;
-import com.nkh1987.banking.dto.InquiryRequest;
-import com.nkh1987.banking.dto.UserRequest;
+import com.nkh1987.banking.dto.*;
 import com.nkh1987.banking.entity.User;
 import com.nkh1987.banking.service.impl.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +40,11 @@ public class UserController {
      @PostMapping("withdraw")
      public BankResponse withdrawMoney(@RequestBody CreditDebitRequest request) {
         return userService.withdrawMoney(request);
+     }
+
+     @PostMapping("transfer")
+     public BankResponse transfer(@RequestBody TransferRequest request) {
+        return userService.transfer(request);
      }
 
     @GetMapping("getAllUsers")

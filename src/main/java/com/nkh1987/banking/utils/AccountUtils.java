@@ -17,6 +17,8 @@ public class  AccountUtils {
     public static final String ACCOUNT_WITHDRAW_SUCCESS_MESSAGE = "User withdrew money successfully";
     public static final String INSUFFICIENT_BALANCE_CODE = "007";
     public static final String INSUFFICIENT_BALANCE_MESSAGE = "The requested amount is greater then the account balance";
+    public static final String TRANSFER_SUCCESS_CODE = "008";
+    public static final String TRANSFER_SUCCESS_MESSAGE = "Money transferred successfully";
 
     // For the sake of simplicity, account numbers are generated randomly
     public static String generateAccountNumber() {

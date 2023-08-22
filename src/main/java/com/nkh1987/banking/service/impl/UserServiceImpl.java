@@ -7,6 +7,7 @@ import com.nkh1987.banking.utils.AccountUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -142,8 +143,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User userToWithdraw = userRepository.findByAccountNumber(request.getAccountNumber());
-        int availableBalance = Integer.parseInt(userToWithdraw.getAccountBalance().toString());
-        int depositAmount = Integer.parseInt(request.getAmount().toString());
+        BigInteger availableBalance = userToWithdraw.getAccountBalance().toBigInteger();
+        BigInteger depositAmount = request.getAmount().toBigInteger();
 
         if (availableBalance < depositAmount) {
             return BankResponse.builder()
@@ -163,6 +164,52 @@ public class UserServiceImpl implements UserService {
                             .accountOwnerName(userToWithdraw.getFirstname() + " " + userToWithdraw.getLastName())
                             .accountBalance(userToWithdraw.getAccountBalance())
                             .accountNumber(request.getAccountNumber())
+                            .build())
+                    .build();
+        }
+    }
+
+    @Override
+    public BankResponse transfer(TransferRequest request) {
+        // There are at least two account numbers in the user table
+        // money is transferred from one to the other
+        // steps:
+        // get source account number
+        // withdraw money from it
+        // get destination account number
+        // deposit money into it
+        Boolean isSourceAccountExists = userRepository.existsByAccountNumber(request.getSourceAccountNumber());
+        Boolean isDestinationAccountExists = userRepository.existsByAccountNumber(
+                request.getDestinationAccountNumber());
+
+        if (!isSourceAccountExists || !isDestinationAccountExists) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_DOES_NOT_EXIST_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_DOES_NOT_EXIST_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+
+        User sourceAccountUser = userRepository.findByAccountNumber(request.getSourceAccountNumber());
+        User destinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
+
+        if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
+                    .responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        } else {
+            sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
+            userRepository.save(sourceAccountUser);
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.TRANSFER_SUCCESS_CODE)
+                    .responseMessage(AccountUtils.TRANSFER_SUCCESS_MESSAGE)
+                    .accountInfo(AccountInfo.builder()
+                            .accountOwnerName(sourceAccountUser.getFirstname() + sourceAccountUser.getLastName())
+                            .accountBalance(sourceAccountUser.getAccountBalance())
+                            .accountNumber(sourceAccountUser.getAccountNumber())
                             .build())
                     .build();
         }
