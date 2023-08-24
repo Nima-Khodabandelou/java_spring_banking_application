@@ -1,6 +1,7 @@
 package com.nkh1987.banking.dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class DepositWithdrawRequest {
 
@@ -38,11 +39,11 @@ public class DepositWithdrawRequest {
         if (!other.canEqual((Object) this)) return false;
         final Object this$accountNumber = this.getAccountNumber();
         final Object other$accountNumber = other.getAccountNumber();
-        if (this$accountNumber == null ? other$accountNumber != null : !this$accountNumber.equals(other$accountNumber))
+        if (!Objects.equals(this$accountNumber, other$accountNumber))
             return false;
         final Object this$amount = this.getAmount();
         final Object other$amount = other.getAmount();
-        if (this$amount == null ? other$amount != null : !this$amount.equals(other$amount)) return false;
+        if (!Objects.equals(this$amount, other$amount)) return false;
         return true;
     }
 
