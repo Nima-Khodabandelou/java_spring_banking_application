@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class AccountInfo {
 
+
     @Schema(
             name = "User account name"
     )
