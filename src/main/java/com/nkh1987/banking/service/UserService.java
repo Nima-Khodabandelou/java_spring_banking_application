@@ -1,4 +1,4 @@
-package com.nkh1987.banking.service.impl;
+package com.nkh1987.banking.service;
 
 import com.nkh1987.banking.dto.*;
 import com.nkh1987.banking.entity.User;

@@ -1,22 +1,25 @@
-package com.nkh1987.banking.service.impl;
+package com.nkh1987.banking.service;
 
 import com.nkh1987.banking.dto.*;
 import com.nkh1987.banking.entity.User;
 import com.nkh1987.banking.repository.UserRepository;
 import com.nkh1987.banking.utils.AccountUtils;
 import org.springframework.stereotype.Service;
+import com.nkh1987.banking.service.TransactionService;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServices implements UserService {
 
     private final UserRepository userRepository;
+    private final TransactionService transactionService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServices(UserRepository userRepository, TransactionService transactionService) {
         this.userRepository = userRepository;
+        this.transactionService = transactionService;
     }
 
     @Override
@@ -118,6 +121,15 @@ public class UserServiceImpl implements UserService {
         userToDeposit.setAccountBalance(userToDeposit.getAccountBalance().add(request.getAmount()));
         userRepository.save(userToDeposit);
 
+        TransactionDto transactionDto = TransactionDto.builder()
+                .accountNumber(userToDeposit.getAccountNumber())
+                .transactionType("DEPOSIT")
+                .amount(request.getAmount())
+                .status("SUCCEED")
+                .build();
+
+        transactionService.saveTransaction(transactionDto);
+
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_CODE)
                 .responseMessage(AccountUtils.ACCOUNT_DEPOSIT_SUCCESS_MESSAGE)
@@ -156,6 +168,15 @@ public class UserServiceImpl implements UserService {
 
             userToWithdraw.setAccountBalance(userToWithdraw.getAccountBalance().subtract(request.getAmount()));
             userRepository.save(userToWithdraw);
+
+            TransactionDto transactionDto = TransactionDto.builder()
+                    .accountNumber(userToWithdraw.getAccountNumber())
+                    .transactionType("WITHDRAW")
+                    .amount(request.getAmount())
+                    .status("SUCCEED")
+                    .build();
+
+            transactionService.saveTransaction(transactionDto);
 
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_WITHDRAW_SUCCESS_CODE)
@@ -203,9 +224,19 @@ public class UserServiceImpl implements UserService {
         } else {
             sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
             userRepository.save(sourceAccountUser);
+
             destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance()
                     .add(request.getAmount()));
             userRepository.save(destinationAccountUser);
+
+            TransactionDto transactionDto = TransactionDto.builder()
+                    .accountNumber(destinationAccountUser.getAccountNumber())
+                    .transactionType("TRANSFER")
+                    .amount(request.getAmount())
+                    .status("SUCCEED")
+                    .build();
+
+            transactionService.saveTransaction(transactionDto);
 
             return BankResponse.builder()
                     .responseCode(AccountUtils.TRANSFER_SUCCESS_CODE)

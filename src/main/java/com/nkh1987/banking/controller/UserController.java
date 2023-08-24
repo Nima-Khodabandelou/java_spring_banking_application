@@ -2,7 +2,7 @@ package com.nkh1987.banking.controller;
 
 import com.nkh1987.banking.dto.*;
 import com.nkh1987.banking.entity.User;
-import com.nkh1987.banking.service.impl.UserService;
+import com.nkh1987.banking.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
