@@ -11,8 +11,8 @@ public interface  UserService {
     BankResponse createAccount(UserRequest userRequest);
     BankResponse balanceInquiry(InquiryRequest enquiryRequest);
     String nameInquiry(InquiryRequest request);
-    BankResponse depositMoney(CreditDebitRequest request);
+    BankResponse depositMoney(DepositWithdrawRequest request);
     BankResponse transfer(TransferRequest request);
     List<User> getAllUsers();
-    BankResponse withdrawMoney(CreditDebitRequest request);
+    BankResponse withdrawMoney(DepositWithdrawRequest request);
 }

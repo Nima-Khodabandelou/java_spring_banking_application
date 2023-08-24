@@ -53,12 +53,12 @@ public class UserController {
      }
 
      @PostMapping("deposit")
-     public BankResponse depositMoney(@RequestBody CreditDebitRequest request) {
+     public BankResponse depositMoney(@RequestBody DepositWithdrawRequest request) {
         return userService.depositMoney(request);
      }
 
      @PostMapping("withdraw")
-     public BankResponse withdrawMoney(@RequestBody CreditDebitRequest request) {
+     public BankResponse withdrawMoney(@RequestBody DepositWithdrawRequest request) {
         return userService.withdrawMoney(request);
      }
 

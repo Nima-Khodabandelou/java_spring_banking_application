@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankResponse depositMoney(CreditDebitRequest request) {
+    public BankResponse depositMoney(DepositWithdrawRequest request) {
         Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
 
         if (!isAccountExists) {
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankResponse withdrawMoney(CreditDebitRequest request) {
+    public BankResponse withdrawMoney(DepositWithdrawRequest request) {
         Boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
 
         if(!isAccountExists) {
