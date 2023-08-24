@@ -1,12 +1,20 @@
 package com.nkh1987.banking.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class AccountInfo {
 
+    @Schema(
+            name = "User account name"
+    )
     private String accountOwnerName;
 
+    @Schema(
+            name = "User account balance"
+    )
     private BigDecimal accountBalance;
 
     private String accountNumber;
