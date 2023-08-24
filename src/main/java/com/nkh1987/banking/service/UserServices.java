@@ -15,6 +15,7 @@ import java.util.List;
 public class UserServices implements UserService {
 
     private final UserRepository userRepository;
+
     private final TransactionService transactionService;
 
     public UserServices(UserRepository userRepository, TransactionService transactionService) {
